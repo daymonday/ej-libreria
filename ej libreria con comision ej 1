@@ -1,7 +1,7 @@
-/* Una conocida librer韆 de Bs. As. cuenta con vendedores/as identificados con un c骴igo que atienden
-la tienda, recibiendo una comisi髇 del 3% sobre el importe de las ventas realizadas. Los clientes pueden solicitar a los
-vendedores/as los libros disponibles en la librer韆, donde cada vendedor/a atiende una secci髇 espec韋ica.
-Por cada venta se solicita:( validar los ignresos por teclado con funci髇)
+/* Una conocida librer铆a de Bs. As. cuenta con vendedores/as identificados con un c贸digo que atienden
+la tienda, recibiendo una comisi贸n del 3% sobre el importe de las ventas realizadas. Los clientes pueden solicitar a los
+vendedores/as los libros disponibles en la librer铆a, donde cada vendedor/a atiende una secci贸n espec铆fica.
+Por cada venta se solicita:( validar los ignresos por teclado con funci贸n)
 - Cod vendedor (int, 201 a 220, finaliza 200)
 -Nro factura, int mayor a 0
 -Tpo de libro vendido (char, F-N-I-O)
@@ -9,10 +9,10 @@ Por cada venta se solicita:( validar los ignresos por teclado con funci髇)
 - Precio unitario (real mayor a 0)
 
 Se considera que cada venta incluye solo un tipo de ibro y que un vendedor/a puede atender
-muchas secciones o ninguna (si estuvo ausente ese d韆). La carga finaliza con un codigo de vendedor igual a 200.
+muchas secciones o ninguna (si estuvo ausente ese d铆a). La carga finaliza con un codigo de vendedor igual a 200.
 Se pide:
 
-Al finalizar la jornada, indicar el nro de factura con el mayor importe de venta -> FUNCI覰 MAYOR
+Al finalizar la jornada, indicar el nro de factura con el mayor importe de venta -> FUNCI脫N MAYOR
 El promedio de ventas en importe de cada uno de los vendedores que estuvieron presentes -> Pasamos INT a FLOAT, y es cant total de importe / cant vendedores pres
 Informar el procentaje vendido de cada uno del os tipos de libro -> Pasamos INT  a FLOAT, y es (cant total de libros vendidos de cada tipo * 100) / cant total vendidos ?
 Listar el cod vendedor, cant vendida, importe cobrado y comision del vendedor*/
