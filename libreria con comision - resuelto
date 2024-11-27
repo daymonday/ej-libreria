@@ -1,0 +1,230 @@
+/* Una conocida librería de Bs. As. cuenta con vendedores/as identificados con un código que atienden
+la tienda, recibiendo una comisión del 3% sobre el importe de las ventas realizadas. Los clientes pueden solicitar a los
+vendedores/as los libros disponibles en la librería, donde cada vendedor/a atiende una sección específica.
+Por cada venta se solicita:( validar los ignresos por teclado con función)
+- Cod vendedor (int, 201 a 220, finaliza 200)
+-Nro factura, int mayor a 0
+-Tpo de libro vendido (char, F-N-I-O)
+- Cant vendida
+- Precio unitario (real mayor a 0)
+
+Se considera que cada venta incluye solo un tipo de ibro y que un vendedor/a puede atender
+muchas secciones o ninguna (si estuvo ausente ese día). La carga finaliza con un codigo de vendedor igual a 200.
+Se pide:
+
+Al finalizar la jornada, indicar el nro de factura con el mayor importe de venta -> FUNCIÓN MAYOR
+El promedio de ventas en importe de cada uno de los vendedores que estuvieron presentes -> Pasamos INT a FLOAT, y es cant total de importe / cant vendedores pres
+Informar el procentaje vendido de cada uno del os tipos de libro -> Pasamos INT  a FLOAT, y es (cant total de libros vendidos de cada tipo * 100) / cant total vendidos ?
+Listar el cod vendedor, cant vendida, importe cobrado y comision del vendedor*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+
+int ValidarDato(int lim_inf,int lim_sup);
+int ValidarPositivo(int num1,int lim);
+float ValidarNroReal(float num1,int lim);
+char ValidarCaracter(char char1,char char2, char char3, char char4);
+int Venta_NroMayor(int num1,int aux);
+
+int main()
+{
+    int i=0,cant_vendedor=0,nro_factura,cod_vendedor,cant_vendida,cant_total_vendida,cantF=0,cantN=0,cantI=0,cantO=0, factura_venta_mayor;
+    int vec_cantventas[20]= {0}; /* no deberias poner 20 pq quedarian espacios libres, resolver*/
+    float importeXunidad,suma_importes=0,importes_sumas,vec_cantimporte[20]= {0};
+    char tipoDeLibro;
+
+    printf("\nIngrese codigo de vendedor -201 a 220- 200 para finalizar:\n");
+    cod_vendedor=ValidarDato(200,220);
+
+    while(cod_vendedor!=200 && cant_vendedor<20) /* si calculas asi cant vendedor entonces solo podrian haber 20 ingresos*/
+    {
+        printf("\nIngrese codigo de factura (Entero > 0):\n");
+        nro_factura=ValidarPositivo(nro_factura,0);
+
+        printf("\nIngrese tipo de libro [F - Ficcion, N- No Ficcion, I- Infantil, O- Otros] \n");
+        tipoDeLibro=ValidarCaracter('F','N','I','O');
+
+        printf("\nIngrese cantidad de libros vendida (Entero > 0) :\n");
+        cant_vendida=ValidarPositivo(cant_vendida,0);
+
+        printf("\nIngrese importe (Real > 0):\n");
+        importeXunidad=ValidarNroReal(importeXunidad,0);
+
+
+
+        suma_importes+=importeXunidad*(float)cant_vendida;
+
+        vec_cantventas[cod_vendedor-201]+=cant_vendida; /* guarda la cantidad vendida segun el indice*/
+        vec_cantimporte[cod_vendedor-201]+=importeXunidad*(float) cant_vendida; /* guarda el importe vendido sgun el indice*/ /* se guarda el precio total de la compra en el cod vendedor*/
+
+
+
+
+        switch(tipoDeLibro)
+        {
+        case 'F':
+            cantF+=cant_vendida;
+            break;
+        case 'N':
+            cantN+=cant_vendida;
+            break;
+        case 'I':
+            cantI+=cant_vendida;
+            break;
+        case 'O':
+            cantO+=cant_vendida;
+            break;
+        }
+
+        factura_venta_mayor=Venta_NroMayor(cant_vendida, nro_factura);
+        cant_vendedor++;
+
+        printf("\nIngrese codigo de vendedor -201 a 220- 200 para finalizar:\n");
+        cod_vendedor=ValidarDato(200,220);
+    }
+
+    if(cant_vendedor>0)
+    {
+        printf("\n\n************************************************************\n\n");
+        /*1*/
+        printf("\n Nro. de factura con mayor ventas:\t %d\n",factura_venta_mayor);
+
+        /*2*/
+        cant_total_vendida=cantF+cantI+cantN+cantO;
+
+        printf("\nCOD. VENDEDOR\tPROMEDIO DE VENTAS\n");
+        for(i=0; i<20; i++)
+        {
+            if(vec_cantventas[i]>0)
+            {
+                printf("\n\t%d\t\t%.2f\n",i+201, vec_cantimporte[i]/vec_cantventas[i]);   /* se muestra el cod vendedor, y el proemdio de la suma de sus ventas*/
+            }
+        }
+        /*3*/
+        printf("\nTIPO DE LIBRO \t\t PORCENTAJE\n");
+        printf("\n\tFiccion \t   %.2f",(float) cantF/ cant_total_vendida*100);
+        printf("\n\tNo Ficcion \t  %.2f",(float) cantN/  cant_total_vendida*100);
+        printf("\n\tInfantil \t  %.2f",(float) cantI/  cant_total_vendida*100);
+        printf("\n\tOtros \t\t  %.2f",(float) cantO/  cant_total_vendida*100);
+
+        /*4*/
+
+        /* el problema es que si no tenes mas de 2 vendedores x ej, entonces el nro q tengan se les va asignar 200, 201, etc) */
+        printf("\n\nCOD. VENDEDOR\tCANT. VENDIDAS\tSUMA DE IMPORTES\tCOMISION\n");
+        for(i=0; i<20; i++) /* se deberia mostrar el cod vendedor, la suma de ventas (estos 2 del mismo vec), el importe (otro vec pero mismo indice) y la comision*/
+        {
+            if(vec_cantventas[i]>0)
+            {
+                printf("\n\t%d\t\t%d\t\t%.2f\t\t%.2f\n",i+201,vec_cantventas[i],vec_cantimporte[i],vec_cantimporte[i]*0.03);
+            }
+        }
+
+    }
+    else
+    {
+        printf("\n No se han ingresado datos.\n");
+    }
+
+    system("pause");
+    return 0;
+}
+int Venta_NroMayor(int num1,int aux)
+{
+    int num_mayor=1;
+    if(num1!=0)
+    {
+        if(num1>=num_mayor)
+            num_mayor=num1;
+    }
+    return aux;
+}
+
+int ValidarDato(int lim_inf,int lim_sup)
+{
+    int dato, band=0;
+    do
+    {
+        if(band==0)
+        {
+            scanf("\n%d",&dato);
+            band=1;
+        }
+        else
+        {
+            printf("\nVALOR INCORRECTO. Reingrese nro. mayor a %d y menor que %d:\n",lim_inf,lim_sup);
+            scanf("\n%d",&dato);
+        }
+    }
+    while((dato<lim_inf)||(dato>lim_sup));
+    return dato;
+}
+
+int ValidarPositivo(int num1,int lim)
+{
+    int band=0;
+    do
+    {
+        if(band==0)
+        {
+            scanf("\n%d",&num1);
+            band=1;
+        }
+        else
+        {
+            printf("\nVALOR INCORRECTO. Reingrese nro. mayor a %d:\n",lim);
+            scanf("%d",&num1);
+        }
+
+    }
+    while(num1<lim);
+    return num1;
+}
+
+float ValidarNroReal(float num1, int lim)
+{
+    int band=0;
+    do
+    {
+        if(band==0)
+        {
+            scanf("%f",&num1);
+            band=1;
+        }
+        else
+        {
+            printf("\nVALOR INCORRECTO. Reingrese nro. mayor a %d:",lim);
+            scanf("%f",&num1);
+        }
+    }
+    while(num1<=lim);
+    return num1;
+}
+
+char ValidarCaracter(char char1,char char2, char char3, char char4)
+{
+    int band=0;
+    char caractervalido;
+    do
+    {
+
+        if(band==0)
+        {
+            scanf("\n%c",&caractervalido);
+            fflush(stdin);
+            caractervalido=toupper(caractervalido);
+            band=1;
+        }
+        else
+        {
+            printf("\nVALOR INCORRECTO. Reingrese valor [%c,%c,%c,%c]:",char1,char2,char3,char4);
+            scanf("\n%c",&caractervalido);
+            fflush(stdin);
+            caractervalido=toupper(caractervalido);
+        }
+    }
+    while(caractervalido!=char1&&caractervalido!=char2&&caractervalido!=char3&&caractervalido!=char4);
+
+    return caractervalido;
+}
